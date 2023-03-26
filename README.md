@@ -1,7 +1,7 @@
 # DPReview Archive
 A simple script to archive some part of DPReview
 
-This script will fetch images and info texts from DPReview Image Comparison Tool and save them into `{widget_id}. {scene_title}/{image_attributes}_{image_id}.{extension}`, e.g. `1. Studio scene/Daylight_nikon_d810_Raw_800_None_None_None_24950.nef`
+This script will fetch images and info texts from DPReview Image Comparison Tool and save them into `{widget_id}. {scene_title}/{image_attributes}_{image_id}.{extension}`, e.g. `1. Studio scene/Daylight_nikon_d810_Raw_800_None_None_None_24950.nef`.
 
 Uncomment line 62-65 if you want to save the request and response data for debug or other purposes.
 
@@ -114,7 +114,7 @@ Here is the (hopefully) complete list of currently available tools (unique `scen
 
 
 ## TODO
--[] Add command line interface
--[] Adjust request rate dynamically
--[] Async IO
--[] Error handling
+- [] Add command line interface
+- [] Adjust request rate dynamically
+- [] Async IO
+- [] Error handling
