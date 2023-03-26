@@ -9,29 +9,29 @@
 
 ~~By default, this script will only archive Studio scene(1), Video Stills Comparison(67), Raw DR: ISO-invariance(197) and Raw DR: Exposure Latitude(205). You can edit line 134 to archive images from other tools, but this script may not work on some of them.~~
 
-Here is the (hopefully) complete list of currently available tools (unique `sceneId`) on DPReview:
+Here is a (hopefully) complete list of currently available tools (unique `sceneId`) on DPReview:
 
 | widget | sceneId | sceneTitle | Note | Progress |
 | ------ | ------- | ---------- | ---- | -------- |
-| 1 | 1 | Studio scene |  | ~10% |
-| 21 | 6 | Connect Studio Scene | Smartphones |  |
-| 47 | 7 | Shadow Noise Comparison |  |  |
+| 1 | 1 | Studio scene |  | ~12% |
+| 21 | 6 | Connect Studio Scene | Smartphones | 100% |
+| 47 | 7 | Shadow Noise Comparison |  | 100% |
 | 67 | 9 | Video Stills Comparison |  | 100% |
 | 69 | 10 | Sony DSC-RX10 noise reduction sample |  |  |
-| 76 | 12 | E-M10 Video Modes |  |  |
-| 82 | 13 | AA Filter Simulation | on PENTAX K-3 |  |
-| 97 | 15 | PowerShot G1 X II Raw Shadow Recovery |  |  |
-| 101 | 16 | 2014 Waterproof Real World (daylight) |  |  |
-| 104 | 17 | RX100 III video modes |  |  |
-| 111 | 19 | 2014 Waterproof Real World (low light) |  |  |
-| 112 | 20 | 2014 Waterproof Studio Scene |  |  |
-| 119 | 22 | A7S ISO Comparison |  |  |
-| 120 | 21 | Panasonic Lumix DMC-FZ1000 vs Sony Cyber-shot DSC-RX10 |  |  |
-| 121 | 23 | Panasonic FZ1000 vs Sony RX10 real-world |  |  |
-| 133 | 26 | High ISO Compared |  |  |
-| 137 | 27 | ISO Compared: GH4 vs A7S |  |  |
-| 159 | 28 | G7 X Raw Improvement |  |  |
-| 163 | 30 | Compact Camera Lens Assessment |  |  |
+| 76 | 12 | E-M10 Video Modes |  | 100% |
+| 82 | 13 | AA Filter Simulation | on PENTAX K-3 | 100% |
+| 97 | 15 | PowerShot G1 X II Raw Shadow Recovery |  | 100% |
+| 101 | 16 | 2014 Waterproof Real World (daylight) |  | 100% |
+| 104 | 17 | RX100 III video modes |  | 100% |
+| 111 | 19 | 2014 Waterproof Real World (low light) |  | 100% |
+| 112 | 20 | 2014 Waterproof Studio Scene |  | 100% |
+| 119 | 22 | A7S ISO Comparison |  | 100% |
+| 120 | 21 | Panasonic Lumix DMC-FZ1000 vs Sony Cyber-shot DSC-RX10 |  | 100% |
+| 121 | 23 | Panasonic FZ1000 vs Sony RX10 real-world |  | 100% |
+| 133 | 26 | High ISO Compared |  | 100% |
+| 137 | 27 | ISO Compared: GH4 vs A7S |  | 100% |
+| 159 | 28 | G7 X Raw Improvement |  | 100% |
+| 163 | 30 | Compact Camera Lens Assessment |  | 50% |
 | 164 | 29 | Lx100 real-world Raw DR comparison |  |  |
 | 172 | 32 | D750 Raw improvement |  |  |
 | 173 | 33 | Exposure Latitude |  |  |
