@@ -13,35 +13,35 @@ Here is a (hopefully) complete list of currently available tools (unique `sceneI
 
 | widget | sceneId | sceneTitle | Note | Progress |
 | ------ | ------- | ---------- | ---- | -------- |
-| 1 | 1 | Studio scene |  | ~12% |
+| 1 | 1 | Studio scene |  | ~25% |
 | 21 | 6 | Connect Studio Scene | Smartphones | 100% |
 | 47 | 7 | Shadow Noise Comparison |  | 100% |
 | 67 | 9 | Video Stills Comparison |  | 100% |
-| 69 | 10 | Sony DSC-RX10 noise reduction sample |  |  |
+| 69 | 10 | Sony DSC-RX10 noise reduction sample | s3Key error | 80% |
 | 76 | 12 | E-M10 Video Modes |  | 100% |
 | 82 | 13 | AA Filter Simulation | on PENTAX K-3 | 100% |
 | 97 | 15 | PowerShot G1 X II Raw Shadow Recovery |  | 100% |
 | 101 | 16 | 2014 Waterproof Real World (daylight) |  | 100% |
-| 104 | 17 | RX100 III video modes |  | 100% |
+| 104 | 17 | RX100 III video modes | Empty |  |
 | 111 | 19 | 2014 Waterproof Real World (low light) |  | 100% |
 | 112 | 20 | 2014 Waterproof Studio Scene |  | 100% |
 | 119 | 22 | A7S ISO Comparison |  | 100% |
 | 120 | 21 | Panasonic Lumix DMC-FZ1000 vs Sony Cyber-shot DSC-RX10 |  | 100% |
 | 121 | 23 | Panasonic FZ1000 vs Sony RX10 real-world |  | 100% |
-| 133 | 26 | High ISO Compared |  | 100% |
+| 133 | 26 | High ISO Compared | Empty |  |
 | 137 | 27 | ISO Compared: GH4 vs A7S |  | 100% |
 | 159 | 28 | G7 X Raw Improvement |  | 100% |
-| 163 | 30 | Compact Camera Lens Assessment |  | 50% |
-| 164 | 29 | Lx100 real-world Raw DR comparison |  |  |
-| 172 | 32 | D750 Raw improvement |  |  |
-| 173 | 33 | Exposure Latitude |  |  |
-| 178 | 36 | Canon EOS 7D II Real-World DR |  |  |
-| 184 | 39 | Lens Comparison |  |  |
-| 191 | 40 | Foveon VS. Bayer |  |  |
-| 195 | 41 | Shutter Shock |  |  |
-| 197 | 43 | Raw DR: ISO-invariance |  |  |
-| 201 | 44 | Real World Dynamic Range |  |  |
-| 205 | 45 | Raw DR: Exposure Latitude |  |  |
+| 163 | 30 | Compact Camera Lens Assessment |  | 100% |
+| 164 | 29 | Lx100 real-world Raw DR comparison |  | 100% |
+| 172 | 32 | D750 Raw improvement |  | 100% |
+| 173 | 33 | Exposure Latitude |  | 100% |
+| 178 | 36 | Canon EOS 7D II Real-World DR |  | 100% |
+| 184 | 39 | Lens Comparison |  | 100% |
+| 191 | 40 | Foveon VS. Bayer | Empty |  |
+| 195 | 41 | Shutter Shock | Empty |  |
+| 197 | 43 | Raw DR: ISO-invariance |  | 100% |
+| 201 | 44 | Real World Dynamic Range |  | 100% |
+| 205 | 45 | Raw DR: Exposure Latitude |  | ~70% |
 | 214 | 46 | Real World Dynamic Range |  |  |
 | 218 | 47 | Mirror/Shutter Shock (on Tripod) |  |  |
 | 240 | 49 | 2015 Superzoom Lens Test |  |  |
