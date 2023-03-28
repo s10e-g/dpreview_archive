@@ -7,9 +7,9 @@ Edit line 11 to use proxy.
 
 Uncomment line 71-74 if you want to save the request and response data for debug or other purposes.
 
-Comment out line 82 and 87 if you only want to print image URLs out instead of download them.
+Comment out line 82 and 87 if you only want to print image URLs out instead of downloading them.
 
-By default, this script will only archive Studio scene(1), Video Stills Comparison(67), Raw DR: ISO-invariance(197) and Raw DR: Exposure Latitude(205). You can edit line 143 to archive images from other tools, but this script may not work on some of them.
+By default, this script will only archive Studio scene(1), Video Stills Comparison(67), Raw DR: ISO-invariance(197) and Raw DR: Exposure Latitude(205). You can edit line 144 to archive images from other tools.
 
 Here is a (hopefully) complete list of currently available tools (unique `sceneId`) on DPReview:
 

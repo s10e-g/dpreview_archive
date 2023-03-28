@@ -140,8 +140,15 @@ def get_widget(id):
 
 
 if __name__ == "__main__":
+    scene_archived = set()
+    # for widget_id in range(1, 900):
     for widget_id in [1, 67, 197, 205]:
         widget_info = get_widget(widget_id)
+        if 'sceneTitle' not in widget_info:
+            continue
+        if widget_info['sceneId'] in scene_archived:
+            continue
+
         print("fetching", widget_info['sceneTitle'])
 
         save_path = str(widget_id) + ". " + widget_info['sceneTitle'].translate(filename_filter)
@@ -153,3 +160,5 @@ if __name__ == "__main__":
         get_all_image(widget_info)
 
         os.chdir(olddir)
+
+        scene_archived.add(widget_info['sceneId'])
