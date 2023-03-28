@@ -1,6 +1,9 @@
 # DPReview Archive
-A simple script to archive some part of DPReview
+Simple scripts to archive some part of DPReview
+- `widget.py` image comparison tools
+- `gallery.py` sample galleries
 
+## Image Comparison Tools
 This `widget.py` will fetch images and info texts from DPReview Image Comparison Tool and save them into `{widget_id}. {scene_title}/{image_attributes}_{image_id}.{extension}`, e.g. `1. Studio scene/Daylight_nikon_d810_Raw_800_None_None_None_24950.nef`.
 
 Edit line 11 to use proxy.
@@ -16,7 +19,7 @@ Here is a (hopefully) complete list of currently available tools (unique `sceneI
 | widget | sceneId | sceneTitle | Note | Size | My progress |
 | ------ | ------- | ---------- | ---- | ---- | -------- |
 | 1 | 1 | [Studio scene](https://www.dpreview.com/reviews/image-comparison/fullscreen?widget=1) |  |  | ~70% |
-| 21 | 6 | [Connect Studio Scene](https://www.dpreview.com/reviews/image-comparison/fullscreen?widget=21) | Smartphones |  |  |
+| 21 | 6 | [Connect Studio Scene](https://www.dpreview.com/reviews/image-comparison/fullscreen?widget=21) | Smartphones | 951M | 100% |
 | 47 | 7 | [Shadow Noise Comparison](https://www.dpreview.com/reviews/image-comparison/fullscreen?widget=47) |  | 359M | 100% |
 | 67 | 9 | [Video Stills Comparison](https://www.dpreview.com/reviews/image-comparison/fullscreen?widget=67) |  | 1.2G | 100% |
 | 69 | 10 | [Sony DSC-RX10 noise reduction sample](https://www.dpreview.com/reviews/image-comparison/fullscreen?widget=69) | s3Key error | 40M | 80% |
@@ -115,6 +118,8 @@ Here is a (hopefully) complete list of currently available tools (unique `sceneI
 | 824 | 120 | [ACR Super Resolution (2021)](https://www.dpreview.com/reviews/image-comparison/fullscreen?widget=824) |  | 0 | 100% |
 | 827 | 121 | [ACR Super Resolution](https://www.dpreview.com/reviews/image-comparison/fullscreen?widget=827) |  | 0 | 100% |
 | 867 | 123 | [Studio lens test](https://www.dpreview.com/reviews/image-comparison/fullscreen?widget=867) |  | 317M | 100% |
+
+## Sample Galleries
 
 
 ## TODO
