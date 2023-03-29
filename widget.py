@@ -19,8 +19,13 @@ filename_filter = {
         47: 45,
         }
 
+SLEEP_TIME = 0.6
+
 
 def download_image(img_url, img_name):
+    if img_url[-1] == '=':
+        return
+
     img_name += os.path.splitext(img_url)[1]
     if os.path.exists(img_name):
         print("skip", img_name)
@@ -48,22 +53,23 @@ def get_images(data):
     requests_data = {
             'data': json.dumps(data)
             }
-    response = requests.post(url, headers=requests_headers, data=requests_data, proxies=requests_proxy)
-    try:
-        res = response.json()
-    except Exception as e:
-        print("error get_images", e)
-        print(data)
-        print(response.text)
-        res = {
-                'attributes': [],
-                'images': [],
-                }
-    return res
+    while True:
+        response = requests.post(url, headers=requests_headers, data=requests_data, proxies=requests_proxy)
+        try:
+            res = response.json()
+            return res
+        except Exception as e:
+            print("error get_images", e)
+            print(response.status_code)
+            print(data)
+            print(response.text)
+            if response.status_code != 404:
+                time.sleep(180)
+                SLEEP_TIME += 0.2
 
 
 def image_process_attributes(data, attributes, num_processed=0):
-    time.sleep(.4)
+    time.sleep(SLEEP_TIME)
     if not attributes:
         base_name = ''.join([str(i['value'])+'_' for i in data['attributes']])
         base_name = base_name.translate(filename_filter)
