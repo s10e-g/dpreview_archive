@@ -49,19 +49,26 @@ def download_image(img_url, img_name):
 
 
 def get_images(data):
+    global SLEEP_TIME
     url = "https://www.dpreview.com/reviews/image-comparison/get-images"
     requests_data = {
             'data': json.dumps(data)
             }
     while True:
-        response = requests.post(url, headers=requests_headers, data=requests_data, proxies=requests_proxy)
+        try:
+            response = requests.post(url, headers=requests_headers, data=requests_data, proxies=requests_proxy)
+        except Exception as e:
+            print(e)
+            print(data)
+            time.sleep(180)
+            continue
         try:
             res = response.json()
             return res
         except Exception as e:
             print("error get_images", e)
-            print(response.status_code)
             print(data)
+            print(response.status_code)
             print(response.text)
             if response.status_code != 404:
                 time.sleep(180)
@@ -139,10 +146,30 @@ def get_all_image(widget):
 
 
 def get_widget(id):
+    global SLEEP_TIME
     url = "https://www.dpreview.com/reviews/image-comparison/get-widget"
     data = {'widget': str(id)}
-    response = requests.post(url, headers=requests_headers, data=data, proxies=requests_proxy)
-    return response.json()
+    while True:
+        try:
+            response = requests.post(url, headers=requests_headers, data=data, proxies=requests_proxy)
+        except Exception as e:
+            print(e)
+            print(data)
+            time.sleep(180)
+            continue
+        try:
+            res = response.json()
+            return res
+        except Exception as e:
+            print(e)
+            print(response.status_code)
+            print(data)
+            print(response.text)
+            if response.status_code != 404:
+                time.sleep(180)
+                SLEEP_TIME += 0.2
+            else:
+                return {}
 
 
 if __name__ == "__main__":
