@@ -1,128 +1,150 @@
 #!/usr/bin/env python3
 import os
 import re
-import sys
-import time
 import json
+import time
 import requests
 from bs4 import BeautifulSoup
-from urllib.parse import urljoin
-from multiprocessing.pool import ThreadPool
-
-requests_proxy = {
-        # 'https': 'socks5://127.0.0.1:1080',
-        }
-
-requests_headers = {
-        'User-Agent': "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/111.0",
-        }
-
-filename_filter = {
-        47: 45,
-        34: '',
-        }
+from urllib.parse import urlparse, unquote
 
 SLEEP_TIME = 0.6
 
 
-def download_image(img_url, img_name=None):
+def create_session(user_agent, proxy):
+    session = requests.Session()
+    session.headers.update({'User-Agent': user_agent})
+    session.proxies.update({'http': proxy, 'https': proxy})
+    return session
+
+
+def get_gallery_ids(session, url):
+    response = session.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    gallery_elements = soup.find_all('tr', class_='gallery')
+    gallery_ids = [json.loads(element['data-gallery'])['id'] for element in gallery_elements]
+    return gallery_ids
+
+
+def get_gallery_info(session, gallery_id):
     global SLEEP_TIME
-    if img_url is None:
-        return None
     time.sleep(SLEEP_TIME)
+    url = f"https://www.dpreview.com/sample-galleries/data/get-gallery?galleryId={gallery_id}&isMobile=false"
     while True:
         try:
-            response = requests.get(img_url, headers=requests_headers, stream=True, proxies=requests_proxy)
-        except Exception as e:
-            print("error saving image: " + str(img_url), file=sys.stderr)
-            print(e, file=sys.stderr)
-            time.sleep(180)
-            SLEEP_TIME += 0.2
-        else:
-            if response.status_code == 200:
-                if img_name is None:
-                    try:
-                        d = response.headers['content-disposition']
-                        img_name = re.findall("filename=(.+)", d)[0].translate(filename_filter)
-                    except Exception as e:
-                        print(e, file=sys.stderr)
-                        img_name = str(int(time.time()))
-                if not os.path.exists(img_name):
-                    with open(img_name, 'wb') as file:
-                        for chunk in response.iter_content(1048576):
-                            file.write(chunk)
-                return os.path.splitext(img_name)[0]
-            elif response.status_code == 404:
-                print("image net found: " + str(img_url), file=sys.stderr)
+            response = session.get(url)
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.HTTPError as e:
+            if e.response.status_code == 429:
+                print(f"Gallery ID {gallery_id} got error 429, retry in 180s...")
+                SLEEP_TIME += 0.2
+                time.sleep(180)
+            elif e.response.status_code == 404:
+                print(f"Gallery ID {gallery_id} not found, skipping.")
                 return None
             else:
-                print("error saving image: " + str(img_url), file=sys.stderr)
-                print(response.status_code, file=sys.stderr)
-                print(response.text, file=sys.stderr)
-                time.sleep(180)
-                SLEEP_TIME += 0.2
+                print(f"Error {e.response.status_code}: Unable to get gallery info for ID {gallery_id}.")
+                return None
 
 
-def save_image(img_info):
-    time.sleep(SLEEP_TIME)
-    base_name = download_image(img_info['rawUrl'])
-    if base_name is None:
-        base_name = img_info['id']
-    download_image(img_info['url'], base_name + '.jpg')
-    with open(base_name + '.json', 'w') as file:
-        file.write(str(img_info))
+def download_image(session, url, save_path, delay, response=None):
+    if os.path.exists(save_path):
+        return
+
+    if response is None:
+        time.sleep(delay)
+        response = session.get(url, stream=True)
+
+    response.raise_for_status()
+
+    with open(save_path, 'wb') as image_file:
+        for chunk in response.iter_content(chunk_size=1048576):
+            image_file.write(chunk)
 
 
-def get_gallery(id):
+def main():
     global SLEEP_TIME
-    time.sleep(SLEEP_TIME)
-    url = f"https://www.dpreview.com/sample-galleries/data/get-gallery?galleryId={id}&isMobile=false"
-    while True:
-        try:
-            response = requests.get(url, headers=requests_headers, proxies=requests_proxy)
-        except Exception as e:
-            print(e)
-            print(url)
-            time.sleep(180)
-            SLEEP_TIME += 0.2
+    user_agent = "Mozilla/5.0 (X11; Linux x86_64; rv:109.0) Gecko/20100101 Firefox/111.0"
+    proxy = "socks5://127.0.0.1:1081"
+    session = create_session(user_agent, proxy)
+
+    base_url = "https://www.dpreview.com/sample-galleries"
+    gallery_ids = get_gallery_ids(session, base_url)
+
+    for gallery_id in gallery_ids[214:700]:
+        gallery_info = get_gallery_info(session, gallery_id)
+
+        if gallery_info is None:
             continue
-        try:
-            res = response.json()
-            return res
-        except Exception as e:
-            print(e)
-            print(response.status_code)
-            print(response.text)
-            if response.status_code != 404:
-                time.sleep(180)
-                SLEEP_TIME += 0.2
-            else:
-                return {}
 
+        gallery_title = gallery_info['gallery']['title'].replace('/', '_')
+        directory_name = f"{gallery_id}. {gallery_title}"
+        print("fetching", gallery_info['gallery']['title'])
 
-def get_galleries_list():
-    url = "https://www.dpreview.com/sample-galleries"
-    response = requests.get(url, headers=requests_headers, proxies=requests_proxy)
-    soup = BeautifulSoup(response.text, "html.parser")
-    galleries = soup.select('tr.gallery')
-    return [json.loads(g['data-gallery'])['id'] for g in galleries]
+        if not os.path.exists(directory_name):
+            os.makedirs(directory_name)
+
+        for i in range(len(gallery_info['images'])):
+            image = gallery_info['images'][i]
+            raw_url = image['rawUrl']
+            image_url = image['url']
+            image_filename = None
+
+            if raw_url:
+                while True:
+                    time.sleep(SLEEP_TIME)
+                    try:
+                        with session.get(raw_url, stream=True) as response:
+                            content_disposition = response.headers.get('content-disposition')
+                            if content_disposition:
+                                raw_filename = re.findall('filename="(.+)"', content_disposition)[0]
+                            else:
+                                raw_filename = unquote(urlparse(raw_url).path.split('/')[-1])
+
+                            raw_save_path = os.path.join(directory_name, raw_filename)
+                            download_image(session, raw_url, raw_save_path, SLEEP_TIME, response)
+
+                            # Handle image_url with the same basename but different extension
+                            image_filename = os.path.splitext(raw_filename)[0] + os.path.splitext(urlparse(image_url).path)[-1]
+                        break
+                    except requests.exceptions.HTTPError as e:
+                        if e.response.status_code == 403:
+                            print(f"Error {e.response.status_code}: access denied downloading {raw_url} for gallery ID {gallery_id}. Retrying...")
+                            gallery_info = get_gallery_info(session, gallery_id)
+                            raw_url = gallery_info['images'][i]['rawUrl']
+                            image_url = gallery_info['images'][i]['url']
+                        elif e.response.status_code == 429:
+                            SLEEP_TIME += 0.2
+                            time.sleep(180)
+                            print(f"Error {e.response.status_code}: {raw_url} for gallery ID {gallery_id}. Retrying...")
+                        else:
+                            print(f"Error {e.response.status_code}: Unable to download raw image {raw_url} for gallery ID {gallery_id}.")
+                            break
+
+            while True:
+                if image_filename is None:
+                    image_filename = unquote(urlparse(image_url).path.split('/')[-1])
+                image_save_path = os.path.join(directory_name, image_filename)
+                try:
+                    download_image(session, image_url, image_save_path, SLEEP_TIME)
+                    break
+                except requests.exceptions.HTTPError as e:
+                    if e.response.status_code == 403:
+                        print(f"Error {e.response.status_code}: access denied downloading {image_filename} for gallery ID {gallery_id}. Retrying...")
+                        gallery_info = get_gallery_info(session, gallery_id)
+                        image_url = gallery_info['images'][i]['url']
+                    elif e.response.status_code == 429:
+                        SLEEP_TIME += 0.2
+                        time.sleep(180)
+                        print(f"Error {e.response.status_code}: {image_filename} for gallery ID {gallery_id}. Retrying...")
+                    else:
+                        print(f"Error {e.response.status_code}: Unable to download image {image_filename} for gallery ID {gallery_id}.")
+
+            info_path = os.path.join(directory_name, os.path.splitext(image_filename)[0] + '.json')
+            if not os.path.exists(info_path):
+                with open(info_path, 'w') as file:
+                    file.write(str(image))
 
 
 if __name__ == "__main__":
-    for gid in get_galleries_list():
-        gallery_info = get_gallery(gid)
-        if 'gallery' not in gallery_info:
-            continue
-
-        print("fetching", gallery_info['gallery']['title'])
-
-        save_path = str(gid) + ". " + gallery_info['gallery']['title'].translate(filename_filter)
-        olddir = os.getcwd()
-        if not os.path.exists(save_path):
-            os.makedirs(save_path)
-        os.chdir(save_path)
-
-        for img in gallery_info['images']:
-            save_image(img)
-
-        os.chdir(olddir)
+    main()
